@@ -31,7 +31,7 @@ Item{
       anchors.leftMargin: availWidth * .05
       anchors.topMargin: availHeight * .05
       anchors.bottomMargin: availHeight * .05
-      color: "#66181818"
+      color: "#00181818"
       z: 0
       radius: availWidth * .15
     }
@@ -48,7 +48,7 @@ Item{
         text: "Latitude:"
         font.family: fontFace
         color: fontColorLabel
-        font.pixelSize: availWidth * .075
+        font.pixelSize: availWidth * .05
       }
       Text{
         anchors.bottom: currLocation.bottom
@@ -56,7 +56,7 @@ Item{
         text: "Longitude:"
         font.family: fontFace
         color: fontColorLabel
-        font.pixelSize: availWidth * .075
+        font.pixelSize: availWidth * .05
       }
     }
 
@@ -72,7 +72,7 @@ Item{
         text: latitude
         font.family: fontFace
         color: fontColorLoc
-        font.pixelSize: availWidth * .075
+        font.pixelSize: availWidth * .05
       }
       Text{
         horizontalAlignment: Text.AlignLeft
@@ -80,17 +80,17 @@ Item{
         text: longitude
         font.family: fontFace
         color: fontColorLoc
-        font.pixelSize: availWidth * .075
+        font.pixelSize: availWidth * .05
       }
     }
 
     Image {
       anchors.left: locValues.right
-      height: availHeight * .85
-      width: availHeight * .85
+      height: availHeight * .05
+      width: availHeight * .05
       id: bgImage
       source: "assets/outline_location_on_white_48dp.png"
-      fillMode: Image.PreserveAspectFit
+      //fillMode: Image.PreserveAspectFit
       mipmap: true
 
       MouseArea {

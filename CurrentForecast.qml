@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.13
 import QtQuick.Controls 2.13
 import QtQuick.Controls.Material 2.13
 import QtGraphicalEffects 1.0
+import QtQml 2.15
 
 import ArcGIS.AppFramework 1.0
 
@@ -20,11 +21,12 @@ Item{
   signal next()
 
   function genMDTableFromForecast(){
-
     var res = "|   | High | Low | \n | :-: | :-: | :-: | "
 
-    for(var i = 0; i < forecast.length; i++) {
-      res = res + "\n|   " + forecast[i].day + "   | " + forecast[i].high + " | " + forecast[i].low + " |";
+    for(var i = 0; i < currForecast.forecast.length; i++) {
+      var dateVar = new Date((currForecast.forecast[i].time + 3600 * 22) * 1000);
+      var dayName = dateVar.toLocaleDateString(Qt.locale("en-US"), "dddd");
+      res = res + "\n|   " + dayName + "   | " + Math.round(currForecast.forecast[i].max) + " | " + Math.round(currForecast.forecast[i].min) + " |";
     }
     return res;
   }
@@ -41,7 +43,7 @@ Item{
       anchors.fill: parent
       color: "#66181818"
       z: 0
-      radius: availWidth * .15
+      radius: availWidth * .05
     }
 
     Text {
@@ -50,12 +52,12 @@ Item{
       anchors.left: parent.left
       anchors.right: parent.right
       anchors.top: parent.top
-      anchors.leftMargin: availWidth * .08
+      anchors.leftMargin: availWidth * .04
       anchors.topMargin: availHeight * .08
       text: genMDTableFromForecast()
       font.family: fontFace
       color: fontColor
-      font.pixelSize: availWidth * .05
+      font.pixelSize: availWidth * .06
       textFormat: Text.MarkdownText
     }
 
