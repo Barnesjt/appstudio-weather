@@ -12,48 +12,12 @@ Page{
   id: weatherpage
 
   property var fontFace
+  property real latitude
+  property real longitude
+  property var allDays
+  property real currTemp
 
   signal next()
-
-  function getDummyForecast() {
-    var res = []
-    res.push({
-      day: "Saturday",
-      high: 61.0,
-      low: 41.0
-    });
-    res.push({
-      day: "Sunday",
-      high: 61.0,
-      low: 41.0
-    });
-    res.push({
-      day: "Monday",
-      high: 61.0,
-      low: 41.0
-    });
-    res.push({
-      day: "Tuesday",
-      high: 61.0,
-      low: 41.0
-    });
-    res.push({
-      day: "Wednesday",
-      high: 61.0,
-      low: 41.0
-    });
-    res.push({
-      day: "Thursday",
-      high: 61.0,
-      low: 41.0
-    });
-    res.push({
-      day: "Friday",
-      high: 61.0,
-      low: 41.0
-    });
-    return res;
-  }
 
   function isWide(){
     if(weatherpage.width > weatherpage.height){
@@ -62,18 +26,25 @@ Page{
     return false;
   }
 
-  function getBGImage(){
-    return "assets/matthew-smith-rFBA42UFpLs-unsplash.jpg"
-  }
-
   function goMap(){
     next();
+  }
+
+  Database {
+    id: db
+    longitude: weatherpage.longitude
+    latitude: weatherpage.latitude
+
+    onDone: {
+      weatherpage.allDays = db.allDays;
+      weatherpage.currTemp = db.currTemp;
+    }
   }
 
   Image {
     anchors.fill: parent
     id: bgImage
-    source: getBGImage()
+    source: "assets/matthew-smith-rFBA42UFpLs-unsplash.jpg"
     fillMode: Image.PreserveAspectCrop
     z: -1
     mipmap: true
@@ -107,9 +78,9 @@ Page{
       height: weatherpage.height * .2
       anchors.topMargin: weatherpage.height * .05
       CurrentWeather{
-        currTemp: 60.0
-        highTemp: 65.0
-        lowTemp:  45.0
+        currTemp: Math.round(weatherpage.currTemp)
+        highTemp: Math.round(weatherpage.allDays[0].max)
+        lowTemp:  Math.round(weatherpage.allDays[0].min)
         fontFace: weatherpage.fontFace
         fontColorNow: "#FFFFFF"
         fontColorHigh: "#FFFFFF"
@@ -125,8 +96,8 @@ Page{
       Layout.preferredHeight: weatherpage.height * .1
       height: weatherpage.height * .1
       CurrentLocation{
-        longitude: -123.0
-        latitude: 44.8
+        longitude: weatherpage.longitude.toPrecision(5)
+        latitude: weatherpage.latitude.toPrecision(5)
         fontFace: weatherpage.fontFace
         fontColorLabel: "#FFFFFF"
         fontColorLoc: "#FFFFFF"
@@ -145,7 +116,7 @@ Page{
       height: weatherpage.height * .4
       anchors.topMargin: weatherpage.height * .05
       CurrentForecast{
-        forecast: getDummyForecast()
+        forecast: weatherpage.allDays.splice(1,weatherpage.allDays.length-1) //drop the first day
         fontFace: weatherpage.fontFace
         fontColor: "#FFFFFF"
         availWidth: weatherpage.width

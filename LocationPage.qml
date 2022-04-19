@@ -39,8 +39,6 @@ Page{
 
   anchors.fill: parent
 
-  property var fontFace
-
   header: ToolBar {
     RowLayout {
       anchors.fill: parent
